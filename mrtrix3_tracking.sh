@@ -12,9 +12,9 @@ set -e
 ##
 
 ## raw inputs
-DIFF=`jq -r '.diff' config.json`
-BVAL=`jq -r '.bval' config.json`
-BVEC=`jq -r '.bvec' config.json`
+DIFF=`jq -r '.dwi' config.json`
+BVAL=`jq -r '.bvals' config.json`
+BVEC=`jq -r '.bvecs' config.json`
 ANAT=`jq -r '.anat' config.json`
 MASK=`jq -r '.mask' config.json`
 BRAINMASK=`jq -r '.brainmask' config.json`
