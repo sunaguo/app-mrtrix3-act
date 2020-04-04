@@ -16,6 +16,16 @@ DIFF=`jq -r '.diff' config.json`
 BVAL=`jq -r '.bval' config.json`
 BVEC=`jq -r '.bvec' config.json`
 ANAT=`jq -r '.anat' config.json`
+MASK=`jq -r '.mask' config.json`
+BRAINMASK=`jq -r '.brainmask' config.json`
+lmax2=`jq -r '.lmax2' config.json`
+lmax4=`jq -r '.lmax4' config.json`
+lmax6=`jq -r '.lmax6' config.json`
+lmax8=`jq -r '.lmax8' config.json`
+lmax10=`jq -r '.lmax10' config.json`
+lmax12=`jq -r '.lmax12' config.json`
+lmax14=`jq -r '.lmax14' config.json`
+lmax16=`jq -r '.lmax16' config.json`
 
 ## parse potential ensemble / individual lmaxs
 ENS_LMAX=`jq -r '.ens_lmax' config.json`
@@ -31,7 +41,7 @@ MAX_LENGTH=`jq -r '.max_length' config.json`
 TENSOR_FIT=`jq -r '.tensor_fit' config.json`
 
 ## perform multi-tissue intensity normalization
-NORM=`jq -r '.norm' config.json`
+#NORM=`jq -r '.norm' config.json`
 
 ## tracking types
 DO_PRB2=`jq -r '.do_prb2' config.json`
@@ -66,10 +76,14 @@ echo "Converting raw data into MRTrix3 format..."
 mrconvert -fslgrad $BVEC $BVAL $DIFF ${difm}.mif --export_grad_mrtrix ${difm}.b -force -nthreads $NCORE -quiet
 
 ## create mask of dwi data - use bet for more robust mask
-bet $DIFF bet -R -m -f 0.3
-mrconvert bet_mask.nii.gz ${mask}.mif -force -nthreads $NCORE -quiet
-#dwi2mask ${difm}.mif - -force -nthreads $NCORE -quiet | maskfilter - dilate b0_${out}_brain_mask.mif -npass 5 -force -nthreads $NCORE -quiet
-#dwi2mask ${difm}.mif ${mask}.mif -force -nthreads $NCORE -quiet
+if [[ ${BRAINMASK} == 'null' ]]; then
+	bet $DIFF bet -R -m -f 0.3
+	mrconvert bet_mask.nii.gz ${mask}.mif -force -nthreads $NCORE -quiet
+	#dwi2mask ${difm}.mif - -force -nthreads $NCORE -quiet | maskfilter - dilate b0_${out}_brain_mask.mif -npass 5 -force -nthreads $NCORE -quiet
+	#dwi2mask ${difm}.mif ${mask}.mif -force -nthreads $NCORE -quiet
+else
+	mrconvert ${BRAINMASK} ${mask}.mif -force -nthreads $NCORE -quiet
+fi
 
 ## convert anatomy
 mrconvert $ANAT ${anat}.mif -force -nthreads $NCORE -quiet
@@ -77,7 +91,7 @@ mrconvert $ANAT ${anat}.mif -force -nthreads $NCORE -quiet
 ## create b0 
 dwiextract ${difm}.mif - -bzero -nthreads $NCORE -quiet | mrmath - mean b0.mif -axis 3 -nthreads $NCORE -quiet -force
 
-## check if b0 volume successfully created
+# check if b0 volume successfully created
 if [ ! -f b0.mif ]; then
     echo "No b-zero volumes present."
     NSHELL=`mrinfo -shell_bvalues ${difm}.mif | wc -w`
@@ -304,7 +318,11 @@ fi
 tensor2metric -mask ${mask}.mif -adc md.mif -fa fa.mif -ad ad.mif -rd rd.mif -cl cl.mif -cp cp.mif -cs cs.mif dt.mif -force -nthreads $NCORE -quiet
 
 echo "Creating 5-Tissue-Type (5TT) tracking mask..."
-5ttgen fsl ${anat}.mif 5tt.mif -nocrop -sgm_amyg_hipp -tempdir ./tmp -force $([ "$PREMASK" == "true" ] && echo "-premasked") -nthreads $NCORE -quiet
+if [[ ${MASK} == 'null' ]]; then
+	5ttgen fsl ${anat}.mif 5tt.mif -nocrop -sgm_amyg_hipp -tempdir ./tmp -force $([ "$PREMASK" == "true" ] && echo "-premasked") -nthreads $NCORE -quiet
+else
+	mrconvert ${MASK} 5tt.mif -nthreads $NCORE -force -quiet
+fi
 
 ## generate gm-wm interface seed mask
 5tt2gmwmi 5tt.mif gmwmi_seed.mif -force -nthreads $NCORE -quiet
@@ -325,46 +343,46 @@ else
 fi
 
 ## fit the CSD across requested lmax's
-if [ $MS -eq 0 ]; then
+# if [ $MS -eq 0 ]; then
 
-    for lmax in $LMAXS; do
+#     for lmax in $LMAXS; do
 
-	echo "Fitting CSD FOD of Lmax ${lmax}..."
-	time dwi2fod -mask ${mask}.mif csd ${difm}.mif wmt.txt wmt_lmax${lmax}_fod.mif -lmax $lmax -force -nthreads $NCORE -quiet
+# 	echo "Fitting CSD FOD of Lmax ${lmax}..."
+# 	time dwi2fod -mask ${mask}.mif csd ${difm}.mif wmt.txt wmt_lmax${lmax}_fod.mif -lmax $lmax -force -nthreads $NCORE -quiet
 
-	## intensity normalization of CSD fit
-	# if [ $NORM == 'true' ]; then
-	#     #echo "Performing intensity normalization on Lmax $lmax..."
-	#     ## function is not implemented for singleshell data yet...
-	#     ## add check for fails / continue w/o?
-	# fi
+# 	## intensity normalization of CSD fit
+# 	# if [ $NORM == 'true' ]; then
+# 	#     #echo "Performing intensity normalization on Lmax $lmax..."
+# 	#     ## function is not implemented for singleshell data yet...
+# 	#     ## add check for fails / continue w/o?
+# 	# fi
 	
-    done
+#     done
     
-else
+# else
 
-    for lmax in $LMAXS; do
+#     for lmax in $LMAXS; do
 
-	echo "Fitting MSMT CSD FOD of Lmax ${lmax}..."
-	time dwi2fod msmt_csd ${difm}.mif wmt.txt wmt_lmax${lmax}_fod.mif gmt.txt gmt_lmax${lmax}_fod.mif csf.txt csf_lmax${lmax}_fod.mif -mask ${mask}.mif -lmax $lmax,$lmax,$lmax -force -nthreads $NCORE -quiet
+# 	echo "Fitting MSMT CSD FOD of Lmax ${lmax}..."
+# 	time dwi2fod msmt_csd ${difm}.mif wmt.txt wmt_lmax${lmax}_fod.mif gmt.txt gmt_lmax${lmax}_fod.mif csf.txt csf_lmax${lmax}_fod.mif -mask ${mask}.mif -lmax $lmax,$lmax,$lmax -force -nthreads $NCORE -quiet
 
-	if [ $NORM == 'true' ]; then
+# 	if [ $NORM == 'true' ]; then
 
-	    echo "Performing multi-tissue intensity normalization on Lmax $lmax..."
-	    mtnormalise -mask ${mask}.mif wmt_lmax${lmax}_fod.mif wmt_lmax${lmax}_norm.mif gmt_lmax${lmax}_fod.mif gmt_lmax${lmax}_norm.mif csf_lmax${lmax}_fod.mif csf_lmax${lmax}_norm.mif -force -nthreads $NCORE -quiet
+# 	    echo "Performing multi-tissue intensity normalization on Lmax $lmax..."
+# 	    mtnormalise -mask ${mask}.mif wmt_lmax${lmax}_fod.mif wmt_lmax${lmax}_norm.mif gmt_lmax${lmax}_fod.mif gmt_lmax${lmax}_norm.mif csf_lmax${lmax}_fod.mif csf_lmax${lmax}_norm.mif -force -nthreads $NCORE -quiet
 
-	    ## check for failure / continue w/o exiting
-	    if [ -z wmt_lmax${lmax}_norm.mif ]; then
-		echo "Multi-tissue intensity normalization failed for Lmax $lmax."
-		echo "This processing step will not be applied moving forward."
-		NORM='false'
-	    fi
+# 	    ## check for failure / continue w/o exiting
+# 	    if [ -z wmt_lmax${lmax}_norm.mif ]; then
+# 		echo "Multi-tissue intensity normalization failed for Lmax $lmax."
+# 		echo "This processing step will not be applied moving forward."
+# 		NORM='false'
+# 	    fi
 
-	fi
+# 	fi
 
-    done
+#     done
     
-fi
+# fi
 
 echo "Performing Anatomically Constrained Tractography (ACT)..."
 
@@ -373,17 +391,18 @@ if [ $DO_PRB2 == "true" ]; then
     echo "Tracking iFOD2 streamlines..."
     
     for lmax in $LMAXS; do
+    	fod=$(eval "echo \$lmax${lmax}")
 
 	## pick correct FOD for tracking
-	if [ $MS -eq 1 ]; then
-	    if [ $NORM == 'true' ]; then
-		fod=wmt_lmax${lmax}_norm.mif
-	    else
-		fod=wmt_lmax${lmax}_fod.mif
-	    fi
-	else
-	    fod=wmt_lmax${lmax}_fod.mif
-	fi
+	# if [ $MS -eq 1 ]; then
+	#     if [ $NORM == 'true' ]; then
+	# 	fod=wmt_lmax${lmax}_norm.mif
+	#     else
+	# 	fod=wmt_lmax${lmax}_fod.mif
+	#     fi
+	# else
+	#     fod=wmt_lmax${lmax}_fod.mif
+	# fi
 	
 	for curv in $CURVS; do
 
@@ -409,6 +428,7 @@ if [ $DO_PRB1 == "true" ]; then
     echo "Tracking iFOD1 streamlines..."
     
     for lmax in $LMAXS; do
+    	fod=$(eval "echo \$lmax${lmax}")
 
 	## pick correct FOD for tracking
 	if [ $MS -eq 1 ]; then
@@ -445,6 +465,7 @@ if [ $DO_DETR == "true" ]; then
     echo "Tracking SD_STREAM streamlines..."
     
     for lmax in $LMAXS; do
+    	fod=$(eval "echo \$lmax${lmax}")
 
 	## pick correct FOD for tracking
 	if [ $MS -eq 1 ]; then
@@ -484,6 +505,7 @@ if [ $DO_FACT == "true" ]; then
     ## this would override variation of Lmax (sh2peaks) below
 
     for lmax in $LMAXS; do
+    	fod=$(eval "echo \$lmax${lmax}")
 
 	## pick correct FOD for tracking
 	if [ $MS -eq 1 ]; then
@@ -583,17 +605,17 @@ tckinfo track.tck > tckinfo.txt
 ## convert outputs to save to nifti
 ##
 
-for lmax in $LMAXS; do
+# for lmax in $LMAXS; do
     
-    if [ $NORM == 'true' ]; then
-	mrconvert wmt_lmax${lmax}_norm.mif -stride 1,2,3,4 lmax${lmax}.nii.gz -force -nthreads $NCORE -quiet
-    else
-	mrconvert wmt_lmax${lmax}_fod.mif -stride 1,2,3,4 lmax${lmax}.nii.gz -force -nthreads $NCORE -quiet
-    fi
+#     if [ $NORM == 'true' ]; then
+# 	mrconvert wmt_lmax${lmax}_norm.mif -stride 1,2,3,4 lmax${lmax}.nii.gz -force -nthreads $NCORE -quiet
+#     else
+# 	mrconvert wmt_lmax${lmax}_fod.mif -stride 1,2,3,4 lmax${lmax}.nii.gz -force -nthreads $NCORE -quiet
+#     fi
 
-done
+# done
 
-cp wmt.txt response.txt
+# cp wmt.txt response.txt
 
 ## tensor outputs
 mrconvert fa.mif -stride 1,2,3,4 fa.nii.gz -force -nthreads $NCORE -quiet
@@ -615,11 +637,11 @@ if [ -f dk.mif ]; then
 fi
 
 ## 5 tissue type visualization
-mrconvert 5ttvis.mif -stride 1,2,3,4 5ttvis.nii.gz -force -nthreads $NCORE -quiet
-mrconvert 5tt.mif -stride 1,2,3,4 5tt.nii.gz -force -nthreads $NCORE -quiet
+# mrconvert 5ttvis.mif -stride 1,2,3,4 5ttvis.nii.gz -force -nthreads $NCORE -quiet
+# mrconvert 5tt.mif -stride 1,2,3,4 5tt.nii.gz -force -nthreads $NCORE -quiet
 
-## 5 tissue type visualization
-mrconvert ${mask}.mif -stride 1,2,3,4 mask.nii.gz -force -nthreads $NCORE -quiet
+# ## 5 tissue type visualization
+# mrconvert ${mask}.mif -stride 1,2,3,4 mask.nii.gz -force -nthreads $NCORE -quiet
 
 ## clean up
 rm -rf tmp
