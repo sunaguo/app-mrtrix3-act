@@ -330,17 +330,17 @@ fi
 ## create visualization output
 5tt2vis 5tt.mif 5ttvis.mif -force -nthreads $NCORE -quiet
 
-if [ $MS -eq 0 ]; then
-
-    echo "Estimating CSD response function..."
-    time dwi2response tournier ${difm}.mif wmt.txt -lmax $MAXLMAX -force -nthreads $NCORE -tempdir ./tmp -quiet
-    
-else
-
-    echo "Estimating MSMT CSD response function..."
-    time dwi2response msmt_5tt ${difm}.mif 5tt.mif wmt.txt gmt.txt csf.txt -mask ${mask}.mif -lmax $RMAX -tempdir ./tmp -force -nthreads $NCORE -quiet
-
-fi
+#if [ $MS -eq 0 ]; then
+#
+#    echo "Estimating CSD response function..."
+#    time dwi2response tournier ${difm}.mif wmt.txt -lmax $MAXLMAX -force -nthreads $NCORE -tempdir ./tmp -quiet
+#    
+#else
+#
+#    echo "Estimating MSMT CSD response function..."
+#    time dwi2response msmt_5tt ${difm}.mif 5tt.mif wmt.txt gmt.txt csf.txt -mask ${mask}.mif -lmax $RMAX -tempdir ./tmp -force -nthreads $NCORE -quiet
+#
+#fi
 
 ## fit the CSD across requested lmax's
 # if [ $MS -eq 0 ]; then
@@ -431,15 +431,15 @@ if [ $DO_PRB1 == "true" ]; then
     	fod=$(eval "echo \$lmax${lmax}")
 
 	## pick correct FOD for tracking
-	if [ $MS -eq 1 ]; then
-	    if [ $NORM == 'true' ]; then
-		fod=wmt_lmax${lmax}_norm.mif
-	    else
-		fod=wmt_lmax${lmax}_fod.mif
-	    fi
-	else
-	    fod=wmt_lmax${lmax}_fod.mif
-	fi
+	#if [ $MS -eq 1 ]; then
+	#    if [ $NORM == 'true' ]; then
+	#	fod=wmt_lmax${lmax}_norm.mif
+	#    else
+	#	fod=wmt_lmax${lmax}_fod.mif
+	#    fi
+	#else
+	#    fod=wmt_lmax${lmax}_fod.mif
+	#fi
 
 	for curv in $CURVS; do
 
@@ -468,15 +468,15 @@ if [ $DO_DETR == "true" ]; then
     	fod=$(eval "echo \$lmax${lmax}")
 
 	## pick correct FOD for tracking
-	if [ $MS -eq 1 ]; then
-	    if [ $NORM == 'true' ]; then
-		fod=wmt_lmax${lmax}_norm.mif
-	    else
-		fod=wmt_lmax${lmax}_fod.mif
-	    fi
-	else
-	    fod=wmt_lmax${lmax}_fod.mif
-	fi
+	#if [ $MS -eq 1 ]; then
+	#    if [ $NORM == 'true' ]; then
+	#	fod=wmt_lmax${lmax}_norm.mif
+	#    else
+	#	fod=wmt_lmax${lmax}_fod.mif
+	#    fi
+	#else
+	#    fod=wmt_lmax${lmax}_fod.mif
+	#fi
 
 	for curv in $CURVS; do
 
@@ -508,15 +508,15 @@ if [ $DO_FACT == "true" ]; then
     	fod=$(eval "echo \$lmax${lmax}")
 
 	## pick correct FOD for tracking
-	if [ $MS -eq 1 ]; then
-	    if [ $NORM == 'true' ]; then
-		fod=wmt_lmax${lmax}_norm.mif
-	    else
-		fod=wmt_lmax${lmax}_fod.mif
-	    fi
-	else
-	    fod=wmt_lmax${lmax}_fod.mif
-	fi
+	#if [ $MS -eq 1 ]; then
+	#    if [ $NORM == 'true' ]; then
+	#	fod=wmt_lmax${lmax}_norm.mif
+	#    else
+	#	fod=wmt_lmax${lmax}_fod.mif
+	#    fi
+	#else
+	#    fod=wmt_lmax${lmax}_fod.mif
+	#fi
 	    
 	echo "Extracting $FACT_DIRS peaks from FOD Lmax $lmax for FACT tractography..."
 	pks=peaks_lmax$lmax.mif
