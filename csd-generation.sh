@@ -8,7 +8,7 @@ set -x
 set -e
 
 ## mkdir
-mkdir -p csd 5tt
+mkdir -p csd 5tt brainmask
 
 ##
 ## parse inputs
