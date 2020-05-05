@@ -52,11 +52,11 @@ fi
 ## create mask of dwi data - use bet for more robust mask
 # create mask of dwi
 if [ ! -f mask.mif ]; then
-	if [[ ${brainmask} == 'null' ]]; then
+	if [[ ${mask} == 'null' ]]; then
 		[ ! -f mask.mif ] && bet $DIFF bet -R -m -f 0.3 && mrconvert bet_mask.nii.gz mask.mif -force -nthreads $NCORE -quiet
 	else
 		echo "brainmask input exists. converting to mrtrix format"
-		mrconvert ${brainmask} -stride 1,2,3,4 mask.mif -force -nthreads $NCORE
+		mrconvert ${mask} -stride 1,2,3,4 mask.mif -force -nthreads $NCORE
 	fi
 fi
 
