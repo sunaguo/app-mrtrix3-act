@@ -1,7 +1,7 @@
 #/bin/bash
-## stuff from jobheader.sh
-#PBS -N mrtrix3_act
+#PBS -l nodes=1:ppn=8,walltime=48:00:00
+#PBS -N app-mrtrix3_csd
 #PBS -V
 
-echo "Tracking data..."
-time singularity exec -e docker://brainlife/mrtrix3:3.0_RC3 ./mrtrix3_tracking.sh
+echo "generate csd..."
+time singularity exec -e docker://brainlife/mrtrix3:3.0_RC3 ./csd-generation.sh
