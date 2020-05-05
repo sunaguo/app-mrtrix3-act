@@ -210,12 +210,12 @@ fi
 if [ $MS -eq 0 ]; then
 
     echo "Estimating CSD response function..."
-    time dwi2response tournier ${difm}.mif wmt.txt -lmax $MAXLMAX -force -nthreads $NCORE -tempdir ./tmp -quiet
+    time dwi2response tournier ${difm}.mif wmt.txt -lmax $MAXLMAX -force -nthreads $NCORE -scratch ./tmp -quiet
     
 else
 
     echo "Estimating MSMT CSD response function..."
-    time dwi2response msmt_5tt ${difm}.mif 5tt.mif wmt.txt gmt.txt csf.txt -mask ${mask}.mif -lmax $RMAX -tempdir ./tmp -force -nthreads $NCORE -quiet
+    time dwi2response msmt_5tt ${difm}.mif 5tt.mif wmt.txt gmt.txt csf.txt -mask ${mask}.mif -lmax $RMAX -scratch ./tmp -force -nthreads $NCORE -quiet
 
 fi
 
