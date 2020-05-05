@@ -40,7 +40,6 @@ mkdir ./tmp
 
 ## define working file names
 difm=dwi
-mask=mask
 anat=t1
 
 ## convert input diffusion data into mrtrix format
