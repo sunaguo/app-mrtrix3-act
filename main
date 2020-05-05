@@ -4,4 +4,4 @@
 #PBS -V
 
 echo "generate csd..."
-time singularity exec -e docker://brainlife/mrtrix3:3.0_RC3 ./csd-generation.sh
+time singularity exec -e docker://brainlife/mrtrix3:3.0.0 ./csd-generation.sh
