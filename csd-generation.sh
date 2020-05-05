@@ -8,7 +8,7 @@ set -x
 set -e
 
 ## mkdir
-mkdir -p csd
+mkdir -p csd 5tt
 
 ##
 ## parse inputs
