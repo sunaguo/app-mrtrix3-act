@@ -198,7 +198,7 @@ dift=${difm}
 if [ -f ${fivett} ]; then
 	[ ! -f 5tt.mif ] && mrconvert ${fivett} 5tt.mif -nthreads $NCORE
 else
-	5ttgen fsl ${anat}.mif 5tt.mif -nocrop -sgm_amyg_hipp -tempdir ./tmp -force $([ "$PREMASK" == "true" ] && echo "-premasked") -nthreads $NCORE -quiet
+	5ttgen fsl ${anat}.mif 5tt.mif -nocrop -sgm_amyg_hipp -scratch ./tmp -force $([ "$PREMASK" == "true" ] && echo "-premasked") -nthreads $NCORE -quiet
 fi
 
 ## generate gm-wm interface seed mask
