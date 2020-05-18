@@ -44,14 +44,14 @@ You can submit this App online at [https://doi.org/10.25663/brainlife.app.238](h
 ```json 
 {
    "dwi":    "testdata/dwi/dwi.nii.gz",
-    "bvals":    "testdata/dwi/dwi.bvals",
-    "bvecs":    "tesdata/dwi/dwi.bvecs",
-    "mask":    "testdata/mask/mask.nii.gz",
-    "brainmask":    "testdata/brainmask/mask.nii.gz",
-    "anat":    "testdata/anat/t1.nii.gz",
-    "lmax":    8,
-    "norm":    false,
-    "ensemble":    true
+   "bvals":    "testdata/dwi/dwi.bvals",
+   "bvecs":    "tesdata/dwi/dwi.bvecs",
+   "mask":    "testdata/mask/mask.nii.gz",
+   "brainmask":    "testdata/brainmask/mask.nii.gz",
+   "anat":    "testdata/anat/t1.nii.gz",
+   "lmax":    8,
+   "norm":    false,
+   "ensemble":    true
 } 
 ``` 
 
@@ -85,6 +85,6 @@ The secondary output of this app is `product.json`. This file allows web interfa
 This App requires the following libraries when run locally. 
 
 - MrTrix3: 
- jsonlab: 
+- jsonlab: 
 - singularity: 
 - FSL: 
