@@ -407,7 +407,7 @@ if [ $DO_PRB2 == "true" ]; then
 	for curv in $CURVS; do
 
 	    echo "Tracking iFOD2 streamlines at Lmax ${lmax} with a maximum curvature of ${curv} degrees..."
-	    timeout 5400 tckgen $fod -algorithm iFOD2 \
+	    tckgen $fod -algorithm iFOD2 \
 		   -select $NUM_FIBERS -act 5tt.mif -backtrack -crop_at_gmwmi -seed_gmwmi gmwmi_seed.mif \
 		   -angle ${curv} -minlength $MIN_LENGTH -maxlength $MAX_LENGTH -seeds 0 -max_attempts_per_seed 500 \
 		   wb_iFOD2_lmax${lmax}_curv${curv}.tck -force -nthreads $NCORE -quiet
