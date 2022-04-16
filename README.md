@@ -32,9 +32,9 @@ We kindly ask that you cite the following articles when publishing papers and co
 
 2. Takemura, H., Caiafa, C. F., Wandell, B. A., & Pestilli, F. (2016). Ensemble tractography. PLoS computational biology, 12(2), e1004692.
 
-3. Tournier, J. D., Smith, R., Raffelt, D., Tabbara, R., Dhollander, T., Pietsch, M., … & Connelly, A. (2019). MRtrix3: A fast, flexible and open software framework for medical image processing and visualisation. NeuroImage, 202, 116137. https://doi.org/10.1016/j.neuroimage.2019.116137 
+3. Tournier, J. D., Smith, R., Raffelt, D., Tabbara, R., Dhollander, T., Pietsch, M., … & Connelly, A. (2019). MRtrix3: A fast, flexible and open software framework for medical image processing and visualisation. NeuroImage, 202, 116137. https://doi.org/10.1016/j.neuroimage.2019.116137
 
-4.Avesani, P., McPherson, B., Hayashi, S. et al. The open diffusion data derivatives, brain data upcycling via integrated publishing of derivatives and reproducible open cloud services. Sci Data 6, 69 (2019). https://doi.org/10.1038/s41597-019-0073-y
+ 4.Avesani, P., McPherson, B., Hayashi, S. et al. The open diffusion data derivatives, brain data upcycling via integrated publishing of derivatives and reproducible open cloud services. Sci Data 6, 69 (2019). https://doi.org/10.1038/s41597-019-0073-y
 
 #### MIT Copyright (c) 2020 brainlife.io The University of Texas at Austin and Indiana University
 
@@ -52,27 +52,27 @@ You can submit this App online at [https://doi.org/https://doi.org/10.25663/brai
 
 ```json
 {
-  "dwi": "/input/dwi/dwi.nii.gz",
-  'anat': '/input/anat/t1.nii.gz',
-  'mask': '/input/5tt/mask.nii.gz',
-  'brainmask': '/input/brainmask/mask.nii.gz'
-  'lmax2': '/input/csd/lmax2.nii.gz',
-  'tensor_fit': 1000,
-  'min_length': 10,
-  'max_length': 200,
-  'imaxs': 2,
-  'ens_lmax': false,
-  'curvs': 35,
-  'num_fibers': 10000,
-  'do_dtdt': false,
-  'do_dtpb': false,
-  'do_detr': false,
-  'do_prb1': false,
-  'do_prb2': true,
-  'do_fact': false,
-  'fact_dirs': 3,
-  'fact_fibs': 5000,
-  'premask': false
+	"dwi": "/input/dwi/dwi.nii.gz",
+	"anat": "/input/anat/t1.nii.gz",
+	"mask": "/input/5tt/mask.nii.gz",
+	"brainmask": "/input/brainmask/mask.nii.gz"
+	"lmax2": "/input/csd/lmax2.nii.gz",
+	"tensor_fit": 1000,
+	"min_length": 10,
+	"max_length": 200,
+	"imaxs": 2,
+	"ens_lmax": false,
+	"curvs": 35,
+	"num_fibers": 10000,
+	"do_dtdt": false,
+	"do_dtpb": false,
+	"do_detr": "false",
+	"do_prb1": false,
+	"do_prb2": true,
+	"do_fact": false,
+	"fact_dirs": 3,
+	"fact_fibs": 5000,
+	"premask": false
 }
 ```
 
