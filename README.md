@@ -51,27 +51,29 @@ You can submit this App online at [https://doi.org/https://doi.org/10.25663/brai
 2. Inside the cloned directory, create `config.json` with something like the following content with paths to your input files.
 
 ```json
-'{'dwi': '/input/dwi/dwi.nii.gz',
-'anat': '/input/anat/t1.nii.gz',
-'mask': '/input/5tt/mask.nii.gz',
-'brainmask': '/input/brainmask/mask.nii.gz'
-'lmax2': '/input/csd/lmax2.nii.gz',
-'tensor_fit': 1000,
-'min_length': 10,
-'max_length': 200,
-'imaxs': 2,
-'ens_lmax': false,
-'curvs': 35,
-'num_fibers': 10000,
-'do_dtdt': false,
-'do_dtpb': false,
-'do_detr': false,
-'do_prb1': false,
-'do_prb2': true,
-'do_fact': false,
-'fact_dirs': 3,
-'fact_fibs': 5000,
-'premask': false}'
+{
+  'dwi': '/input/dwi/dwi.nii.gz',
+  'anat': '/input/anat/t1.nii.gz',
+  'mask': '/input/5tt/mask.nii.gz',
+  'brainmask': '/input/brainmask/mask.nii.gz'
+  'lmax2': '/input/csd/lmax2.nii.gz',
+  'tensor_fit': 1000,
+  'min_length': 10,
+  'max_length': 200,
+  'imaxs': 2,
+  'ens_lmax': false,
+  'curvs': 35,
+  'num_fibers': 10000,
+  'do_dtdt': false,
+  'do_dtpb': false,
+  'do_detr': false,
+  'do_prb1': false,
+  'do_prb2': true,
+  'do_fact': false,
+  'fact_dirs': 3,
+  'fact_fibs': 5000,
+  'premask': false
+}
 ```
 
 ### Sample Datasets
