@@ -52,7 +52,7 @@ You can submit this App online at [https://doi.org/https://doi.org/10.25663/brai
 
 ```json
 {
-  'dwi': '/input/dwi/dwi.nii.gz',
+  "dwi": "/input/dwi/dwi.nii.gz",
   'anat': '/input/anat/t1.nii.gz',
   'mask': '/input/5tt/mask.nii.gz',
   'brainmask': '/input/brainmask/mask.nii.gz'
