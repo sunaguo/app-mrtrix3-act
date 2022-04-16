@@ -29,6 +29,8 @@ Please cite the following articles when publishing papers that used data, code o
 1. Tournier, J.-D.; Calamante, F. & Connelly, A. Robust determination of the fibre orientation distribution in diffusion MRI: Non-negativity constrained super-resolved spherical deconvolution. NeuroImage, 2007, 35, 1459-1472
 2. Jeurissen, B; Tournier, J-D; Dhollander, T; Connelly, A & Sijbers, J. Multi-tissue constrained spherical deconvolution for improved analysis of multi-shell diffusion MRI data. NeuroImage, 2014, 103, 411-426 
 
+#### MIT Copyright (c) 2020 brainlife.io The University of Texas at Austin and Indiana University
+
 ## Running the App 
 
 ### On Brainlife.io 
@@ -82,9 +84,11 @@ The secondary output of this app is `product.json`. This file allows web interfa
 
 ### Dependencies 
 
-This App requires the following libraries when run locally. 
+This App only requires [singularity](https://www.sylabs.io/singularity/) to run. If you don't have singularity, you will need to install following dependencies.   
 
 - MRtrix3: https://mrtrix.readthedocs.io/en/3.0_rc3/installation/linux_install.html
 - jsonlab: https://github.com/fangq/jsonlab
 - singularity: https://singularity.lbl.gov/quickstart
 - FSL: https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FslInstallation
+
+#### MIT Copyright (c) 2020 brainlife.io The University of Texas at Austin and Indiana University
