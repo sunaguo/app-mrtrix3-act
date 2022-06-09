@@ -58,6 +58,14 @@ FACT_FIBS=`jq -r '.fact_fibs' config.json`
 # PREMASK option for 5ttgen
 PREMASK=`jq -r '.premask' config.json`
 
+# stepsize
+STEPSIZE=`jq -r '.stepsize' config.json`
+if [ -z ${STEPSIZE} ]; then
+	step_line='-step ${STEPSIZE}'
+else
+	step_line=''
+fi
+
 ##
 ## begin execution
 ##
@@ -410,7 +418,7 @@ if [ $DO_PRB2 == "true" ]; then
 	    tckgen $fod -algorithm iFOD2 \
 		   -select $NUM_FIBERS -act 5tt.mif -backtrack -crop_at_gmwmi -seed_gmwmi gmwmi_seed.mif \
 		   -angle ${curv} -minlength $MIN_LENGTH -maxlength $MAX_LENGTH -seeds 0 -max_attempts_per_seed 500 \
-		   wb_iFOD2_lmax${lmax}_curv${curv}.tck -force -nthreads $NCORE -quiet
+		   wb_iFOD2_lmax${lmax}_curv${curv}.tck ${step_line} -force -nthreads $NCORE -quiet
 
 	    exit_status=$?
 	    if [ $exit_status -eq 124 ]; then
@@ -447,7 +455,7 @@ if [ $DO_PRB1 == "true" ]; then
 	    timeout 3600 tckgen $fod -algorithm iFOD1 \
 		   -select $NUM_FIBERS -act 5tt.mif -backtrack -crop_at_gmwmi -seed_gmwmi gmwmi_seed.mif \
 		   -angle ${curv} -minlength $MIN_LENGTH -maxlength $MAX_LENGTH -seeds 0 -max_attempts_per_seed 500 \
-		   wb_iFOD1_lmax${lmax}_curv${curv}.tck -force -nthreads $NCORE -quiet
+		   wb_iFOD1_lmax${lmax}_curv${curv}.tck ${step_line} -force -nthreads $NCORE -quiet
 
 	    exit_status=$?
 	    if [ $exit_status -eq 124 ]; then
@@ -484,7 +492,7 @@ if [ $DO_DETR == "true" ]; then
 	    timeout 3600 tckgen $fod -algorithm SD_STREAM \
 		   -select $NUM_FIBERS -act 5tt.mif -crop_at_gmwmi -seed_gmwmi gmwmi_seed.mif \
 		   -angle ${curv} -minlength $MIN_LENGTH -maxlength $MAX_LENGTH -seeds 0 -max_attempts_per_seed 500 \
-		   wb_SD_STREAM_lmax${lmax}_curv${curv}.tck -force -nthreads $NCORE -quiet
+		   wb_SD_STREAM_lmax${lmax}_curv${curv}.tck ${step_line} -force -nthreads $NCORE -quiet
 
 	    exit_status=$?
 	    if [ $exit_status -eq 124 ]; then
@@ -524,7 +532,7 @@ if [ $DO_FACT == "true" ]; then
 
 	echo "Tracking FACT streamlines at Lmax ${lmax} using ${FACT_DIRS} maximum directions..."
 	timeout 3600 tckgen $pks -algorithm FACT -select $FACT_FIBS -act 5tt.mif -crop_at_gmwmi -seed_gmwmi gmwmi_seed.mif -seeds 0 -max_attempts_per_seed 500 \
-	       -minlength $MIN_LENGTH -maxlength $MAX_LENGTH wb_FACT_lmax${lmax}.tck -force -nthreads $NCORE -quiet
+	       -minlength $MIN_LENGTH -maxlength $MAX_LENGTH wb_FACT_lmax${lmax}.tck ${step_line} -force -nthreads $NCORE -quiet
 
 	exit_status=$?
 	if [ $exit_status -eq 124 ]; then
@@ -546,7 +554,7 @@ if [ $DO_DTDT == "true" ]; then
 	timeout 3600 tckgen ${difm}.mif -algorithm Tensor_Det \
 	       -select $NUM_FIBERS -act 5tt.mif -crop_at_gmwmi -seed_gmwmi gmwmi_seed.mif \
 	       -angle ${curv} -minlength $MIN_LENGTH -maxlength $MAX_LENGTH -seeds 0 -max_attempts_per_seed 500 \
-	       wb_Tensor_Det_curv${curv}.tck -force -nthreads $NCORE -quiet
+	       wb_Tensor_Det_curv${curv}.tck ${step_line} -force -nthreads $NCORE -quiet
 
 	exit_status=$?
 	if [ $exit_status -eq 124 ]; then
@@ -568,7 +576,7 @@ if [ $DO_DTPB == "true" ]; then
 	timeout 3600 tckgen ${difm}.mif -algorithm Tensor_Prob \
 	       -select $NUM_FIBERS -act 5tt.mif -crop_at_gmwmi -seed_gmwmi gmwmi_seed.mif \
 	       -angle ${curv} -minlength $MIN_LENGTH -maxlength $MAX_LENGTH -seeds 0 -max_attempts_per_seed 500 \
-	       wb_Tensor_Prob_curv${curv}.tck -force -nthreads $NCORE -quiet
+	       wb_Tensor_Prob_curv${curv}.tck ${step_line} -force -nthreads $NCORE -quiet
 
 	exit_status=$?
 	if [ $exit_status -eq 124 ]; then
