@@ -564,7 +564,8 @@ if [ $DO_DTPB == "true" ]; then
 fi
 
 ## combine different parameters into 1 output
-tckedit wb*.tck track.tck -force -nthreads $NCORE -quiet
+# tckedit wb*.tck track.tck -force -nthreads $NCORE -quiet
+tckedit wb*.tck track.tck -force -nthreads $NCORE -debug
 
 ## find the final size
 COUNT=`tckinfo track.tck | grep -w 'count' | awk '{print $2}'`
@@ -573,12 +574,12 @@ echo "Ensemble tractography generated $COUNT of a requested $TOTAL"
 ## if count is wrong, say so / fail / clean for fast re-tracking
 if [ $COUNT -ne $TOTAL ]; then
     echo "Incorrect count. Tractography failed."
-    rm -f wb*.tck
-    rm -f track.tck
+    # rm -f wb*.tck
+    # rm -f track.tck
     exit 1
 else
     echo "Correct count. Tractography complete."
-    rm -f wb*.tck
+    # rm -f wb*.tck
 fi
 
 ## simple summary text
