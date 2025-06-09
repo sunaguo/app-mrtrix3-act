@@ -645,8 +645,7 @@ rm -rf *.mif
 mkdir -p tracking tensor csd
 mv track.tck tracking/
 
-for fn in fa.nii.gz md.nii.gz rd.nii.gz ad.nii.gz cl.nii.gz cp.nii.gz cs.nii.gz tensors.nii.gz kurtosis.nii.gz ga.nii.g
-z mk.nii.gz ak.nii.gz rk.nii.gz rgb.nii.gz
+for fn in fa.nii.gz md.nii.gz rd.nii.gz ad.nii.gz cl.nii.gz cp.nii.gz cs.nii.gz tensors.nii.gz kurtosis.nii.gz ga.nii.gz mk.nii.gz ak.nii.gz rk.nii.gz rgb.nii.gz
 do
     [[ -f $fn ]] && mv $fn tensor/
 done
