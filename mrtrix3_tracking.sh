@@ -323,7 +323,7 @@ if [ $MS -eq 0 ]; then
 else
 
     echo "Estimating MSMT CSD response function..."
-    dwi2response msmt_5tt ${difm}.mif 5tt.mif wmt.txt gmt.txt csf.txt -mask ${mask}.mif -lmax $RMAX -tempdir ./tmp -force -nthreads $NCORE -quiet
+    dwi2response msmt_5tt ${difm}.mif 5tt.mif wmt.txt gmt.txt csf.txt -mask ${mask}.mif -voxel rf_vox_selection.mif -lmax $RMAX -tempdir ./tmp -force -nthreads $NCORE -quiet
 
 fi
 
