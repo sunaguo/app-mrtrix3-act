@@ -595,8 +595,8 @@ mkdir tensor && mv tensor.nii.gz fa.nii.gz md.nii.gz ad.nii.gz rd.nii.gz cl.nii.
 mkdir raw && mv *.nii.gz *.txt raw/
 
 ## clean up
-rm -rf tmp
-rm -rf *.mif
+# rm -rf tmp
+# rm -rf *.mif
 
 ## can seed cc ROI extra as well if FreeSufer is passed and the ROI is made
 # tckgen -algorithm iFOD2 -select 10000 -act 5tt.mif -backtrack -crop_at_gmwmi -seed_image cc.mif -grad $grad $FODM cc.tck -force -nthreads $NCORE -quiet
