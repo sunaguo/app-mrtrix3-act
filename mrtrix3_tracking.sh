@@ -588,6 +588,13 @@ mrconvert 5tt.mif -stride 1,2,3,4 5tt.nii.gz -force -nthreads $NCORE -quiet
 ## 5 tissue type visualization
 mrconvert ${mask}.mif -stride 1,2,3,4 mask.nii.gz -force -nthreads $NCORE -quiet
 
+## put outputs away for bl collection
+mkdir output_tck && mv track.tck output_tck/
+mkdir csd && mv lmax*.nii.gz response.txt csd/
+mkdir output_tensor && mv tensor.nii.gz fa.nii.gz md.nii.gz ad.nii.gz rd.nii.gz cl.nii.gz cp.nii.gz cs.nii.gz kurtosis.nii.gz output_tensor/
+mkdir raw
+mv *.nii.gz *.txt raw/
+
 ## clean up
 rm -rf tmp
 rm -rf *.mif
