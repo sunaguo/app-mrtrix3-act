@@ -592,7 +592,7 @@ mrconvert ${mask}.mif -stride 1,2,3,4 mask.nii.gz -force -nthreads $NCORE -quiet
 mkdir tracking && mv track.tck tracking/
 mkdir csd && mv lmax*.nii.gz response.txt csd/
 mkdir tensor && mv tensor.nii.gz fa.nii.gz md.nii.gz ad.nii.gz rd.nii.gz cl.nii.gz cp.nii.gz cs.nii.gz kurtosis.nii.gz tensor/
-mkdir raw && mv *.nii.gz *.txt raw/
+mkdir raw && mv *.mif *.nii.gz *.txt raw/
 
 ## clean up
 # rm -rf tmp
